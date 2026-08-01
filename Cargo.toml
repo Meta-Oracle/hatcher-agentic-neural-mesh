@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "crates/hatcher-core",
+  "crates/hatcher-neural",
+  "crates/hatcher-playground",
+  "crates/hatcher-ux"
+]
+resolver = "2"
