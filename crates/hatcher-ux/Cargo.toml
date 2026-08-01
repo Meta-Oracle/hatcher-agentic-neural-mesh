@@ -2,6 +2,14 @@
 name = "hatcher-ux"
 version = "0.1.0"
 edition = "2021"
+authors = ["HatcherLabs"]
+description = "Terminal UX demonstrating the Hatcher neural mesh as an agentic playground."
+license = "MIT"
+repository = "https://github.com/hatcherlabs/hatcher-neural-network-mesh"
+homepage = "https://github.com/hatcherlabs/hatcher-neural-network-mesh"
+keywords = ["agentic", "ux", "terminal", "mesh", "rust"]
+categories = ["command-line-utilities", "simulation"]
+readme = "../../README.md"
 
 [dependencies]
 hatcher-core = { path = "../hatcher-core" }
