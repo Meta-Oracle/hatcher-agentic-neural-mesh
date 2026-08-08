@@ -48,8 +48,8 @@ async fn serve_http(state: AppState) {
 
     let memory = warp::path!("api" / "memory")
         .and(state_filter.clone())
-        .map(|state: AppState| {
-            let mut graph = state.graph.lock().unwrap();
+        .map(|_state: AppState| {
+            let mut graph = _state.graph.lock().unwrap();
             graph.add_edge("intent", "policy");
             graph.add_edge("signal", "intent");
             let payload = graph.clone();
@@ -58,7 +58,7 @@ async fn serve_http(state: AppState) {
 
     let battle = warp::path!("api" / "battle")
         .and(state_filter.clone())
-        .map(|state: AppState| {
+        .map(|_state: AppState| {
             let battle = AgentBattle::new();
             let report = battle.run();
             warp::reply::json(&json!({"winner": report.winner, "rounds": report.rounds, "summary": report.summary}))

@@ -2,9 +2,17 @@
 name = "hatcher-neural"
 version = "0.1.0"
 edition = "2021"
+authors = ["HatcherLabs"]
+description = "A Rust-native agentic neural mesh with deterministic evolution rules and zk-style node serialization."
+license = "MIT"
+repository = "https://github.com/hatcherlabs/hatcher-neural-network-mesh"
+homepage = "https://github.com/hatcherlabs/hatcher-neural-network-mesh"
+keywords = ["agentic", "mesh", "neural", "serialization", "rust"]
+categories = ["algorithms", "science", "simulation"]
+readme = "../../README.md"
 
 [dependencies]
-hatcher-core = { path = "../hatcher-core" }
+hatcher-core = { path = "../hatcher-core", version = "0.1.0" }
 ndarray = "0.16"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

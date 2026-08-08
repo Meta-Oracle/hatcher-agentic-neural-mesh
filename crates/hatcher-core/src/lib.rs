@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ApiRequest {
@@ -143,7 +144,38 @@ impl AgenticNodeData {
     }
 
     pub fn to_zk_envelope(&self) -> Result<SerializedNodeEnvelope, serde_json::Error> {
-        unimplemented!("zk envelope support will be implemented in the neural mesh crate")
+        let canonical_payload = serde_json::to_string(&serde_json::json!({
+            "id": self.id,
+            "label": self.label,
+            "omega": self.omega,
+            "learning": self.learning,
+            "exploration": self.exploration,
+            "cohesion": self.cohesion,
+            "friction": self.friction,
+            "disruption": self.disruption,
+            "intention": self.intention,
+            "stability": self.stability,
+            "policy": self.policy,
+            "coherence": self.coherence,
+            "memory": self.memory,
+            "capacity": self.capacity,
+            "utilization": self.utilization,
+            "bandwidth": self.bandwidth,
+            "intensity": self.intensity,
+            "tau": self.tau
+        }))?;
+
+        let mut hasher = Sha256::new();
+        hasher.update(b"zk-canonical-v1:");
+        hasher.update(canonical_payload.as_bytes());
+        let digest = format!("{:x}", hasher.finalize());
+
+        Ok(SerializedNodeEnvelope {
+            codec: "zk-canonical-v1".to_string(),
+            schema_version: 1,
+            payload: self.clone(),
+            digest,
+        })
     }
 }
 
@@ -172,10 +204,21 @@ pub struct MeshEdge {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MeshStepResult {
+    pub step_index: usize,
     pub nodes: Vec<AgenticNodeData>,
     pub edges: Vec<MeshEdge>,
     pub aggregate_influence: f64,
     pub pressure: f64,
+    pub digest: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MeshSimulation {
+    pub request_id: String,
+    pub steps: Vec<MeshStepResult>,
+    pub final_pressure: f64,
+    pub final_aggregate_influence: f64,
+    pub final_digest: String,
 }
 
 #[cfg(test)]

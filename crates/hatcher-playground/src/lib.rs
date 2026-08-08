@@ -25,6 +25,18 @@ impl AgentArena {
         let response = self.mesh.evaluate(&request);
         response.to_json().unwrap()
     }
+
+    pub fn run_simulation(&self, agent_id: &str, prompt: &str, features: Vec<f64>, steps: usize) -> serde_json::Value {
+        let request = HatcherRequest {
+            agent_id: agent_id.to_string(),
+            role: AgentRole::Explorer,
+            execution_mode: ExecutionMode::Controlled,
+            prompt: prompt.to_string(),
+            features,
+        };
+
+        serde_json::to_value(self.mesh.simulate(&request, steps)).unwrap()
+    }
 }
 
 #[derive(Debug, Clone)]
